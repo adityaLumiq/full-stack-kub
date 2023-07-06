@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - image: public.ecr.aws/d3h2f0h9/web:latest
+          name: web
+          ports:
+            - containerPort: 3000
+          env:
+            - name: REACT_APP_API_URL
+              value: "http://ae81af32a1fce4bf4af52d019741a7c3-23822527.ap-south-1.elb.amazonaws.com:3001/api"
+          resources: {}
+      restartPolicy: Always
+status: {}
