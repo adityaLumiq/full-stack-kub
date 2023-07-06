@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - image: public.ecr.aws/d3h2f0h9/api
+          name: api
+          env:
+            - name: MONGO_URI
+              value: "mongodb+srv://dhruv:dhruv12345@mongo.vbmpndm.mongodb.net/retryWrites=true&w=majority"
+          ports:
+            - containerPort: 3001
+          resources: {}
+      restartPolicy: Always
+status: {}
