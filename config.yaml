@@ -4,4 +4,4 @@ metadata:
   name: config
 data:
   REACT_APP_API_URL: ""
-  MONGO_URI: "mongodb+srv://dhruv:dhruv12345@mongo.vbmpndm.mongodb.net/retryWrites=true&w=majority"
+  MONGO_URI: "mongodb://mongo:27017/todos"
