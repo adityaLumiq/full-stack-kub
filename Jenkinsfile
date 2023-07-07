@@ -15,7 +15,11 @@ pipeline {
         stage ('kub'){
             steps{
                 echo "My variable is  ${api_url}"
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh "kubectl delete ns jenkins"
+                }
                 sh 'kubectl create ns jenkins'
+                sh 'kubectl apply -f full-stack-kub/config.yaml -n jenkins'
                 sh 'kubectl apply -f full-stack-kub/api-deployment.yaml -n jenkins'
                 sh 'kubectl apply -f full-stack-kub/api-service.yaml -n jenkins'
                 sh "timeout 20s bash -c 'until kubectl -n jenkins get service/api --output=jsonpath='{.status.loadBalancer}' | grep ingress; do : ; done'"
