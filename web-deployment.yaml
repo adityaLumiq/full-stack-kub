@@ -19,8 +19,11 @@ spec:
           ports:
             - containerPort: 3000
           env:
-            - name: REACT_APP_API_URL
-              value: "http://ae81af32a1fce4bf4af52d019741a7c3-23822527.ap-south-1.elb.amazonaws.com:3001/api"
+          - name: REACT_APP_API_URL
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: REACT_APP_API_URL
           resources: {}
       restartPolicy: Always
 status: {}
