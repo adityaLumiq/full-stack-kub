@@ -36,9 +36,11 @@ pipeline {
                     sh "kubectl delete ns jenkins"
                 }
                 sh 'kubectl create ns jenkins'
+                sh 'kubectl apply -f full-stack-kub/pvc.yaml -n jenkins'
                 sh 'kubectl apply -f full-stack-kub/config.yaml -n jenkins'
-                sh 'kubectl apply -f full-stack-kub/api-deployment.yaml -n jenkins'
-                sh 'kubectl apply -f full-stack-kub/api-service.yaml -n jenkins'
+
+                sh 'kubectl apply -f full-stack-kub/mongo-headless.yaml -f full-stack-kub/api-service.yaml -f full-stack-kub/web-service.yaml -n jenkins'
+                
                 sh "timeout 20s bash -c 'until kubectl -n jenkins get service/api --output=jsonpath='{.status.loadBalancer}' | grep ingress; do : ; done'"
                 
                 script{
@@ -46,10 +48,12 @@ pipeline {
                     api_url = "http://${api_url}:3001/api"
                 }
                 echo "My variable is ${api_url}"
+                
                 sh "kubectl -n jenkins get cm config -o yaml | sed -e \"s|REACT_APP_API_URL:.*|REACT_APP_API_URL: ${api_url}| \" | kubectl apply -f -"
-    
+
+                sh 'kubectl apply -f full-stack-kub/mongo-ss.yaml -n jenkins'
+                sh 'kubectl apply -f full-stack-kub/api-deployment.yaml -n jenkins'
                 sh 'kubectl apply -f full-stack-kub/web-deployment.yaml -n jenkins'
-                sh 'kubectl apply -f full-stack-kub/web-service.yaml -n jenkins'
             }
         }
         
