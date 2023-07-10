@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: config
 data:
-  REACT_APP_API_URL: ""
+  REACT_APP_API_URL: "http://a56a2950f637647da88de0ffb91d1462-1221625383.ap-south-1.elb.amazonaws.com:3001/api"
   MONGO_URI: "mongodb://mongo:27017/todos"
