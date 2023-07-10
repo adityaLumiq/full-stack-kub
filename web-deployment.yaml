@@ -14,7 +14,7 @@ spec:
         app: web
     spec:
       containers:
-        - image: public.ecr.aws/d3h2f0h9/web:latest
+        - image: public.ecr.aws/d3h2f0h9/web
           name: web
           ports:
             - containerPort: 3000
