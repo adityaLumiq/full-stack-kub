@@ -5,14 +5,22 @@ pipeline {
 
 
     stages {
-        stage('Build') {
+        stage('Clone') {
             steps {
                 cleanWs()
                 // Get some code from a GitHub repository
                 sh 'git clone https://github.com/adityaLumiq/full-stack-kub.git'
+                sh 'git clone https://github.com/dhruvrkashyap/docker-frontend-backend-db.git'
             }
         }
-        stage ('kub '){
+        stage('Build') {
+            steps {
+                sh 'cd docker-frontend-backend-db/backend && docker build -t api .'
+                sh 'cd docker-frontend-backend-db/frontend && docker build -t web .'
+            }
+        }
+        
+        stage ('Deploy '){
             steps{
                 echo "My variable is  ${api_url}"
                 catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
