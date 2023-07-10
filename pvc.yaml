@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: mongodb-data-pvc
 spec:
+  storageClassName: local-storage
   accessModes:
     - ReadWriteOnce
   resources:
