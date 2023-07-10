@@ -19,7 +19,16 @@ pipeline {
                 sh 'cd docker-frontend-backend-db/frontend && docker build -t web .'
             }
         }
-        
+        stage('Push') {
+            steps {
+                sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/d3h2f0h9'
+                sh 'docker tag web:latest public.ecr.aws/d3h2f0h9/web:latest'
+                sh 'docker push public.ecr.aws/d3h2f0h9/web:latest'
+
+                sh 'docker tag api:latest public.ecr.aws/d3h2f0h9/api:latest'
+                sh 'docker push public.ecr.aws/d3h2f0h9/api:latest'
+            }
+        }
         stage ('Deploy '){
             steps{
                 echo "My variable is  ${api_url}"
